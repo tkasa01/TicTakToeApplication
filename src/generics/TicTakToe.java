@@ -1,5 +1,7 @@
 package generics;
 
+import org.jetbrains.annotations.Contract;
+
 /**
  * Created by tkasa on 06/08/2018.
  */
@@ -10,6 +12,7 @@ public class TicTakToe {
     protected char winner;
     protected char currentMarker;
 
+    //Constructor
     public TicTakToe(char playerToken, char aiMarker){
         this.userMarker = playerToken;
         this.aiMarker = aiMarker;
@@ -18,6 +21,11 @@ public class TicTakToe {
         this.currentMarker = userMarker;
 
     }
+
+    /*setBoard() function allows to set a board with every single entries with a dash, witch
+     returns blank board
+    */
+    @Contract(pure = true)
     public static char [] setBoard(){
         char [] board = new char[9];
         for(int i = 0; i< board.length; i++){
@@ -26,8 +34,10 @@ public class TicTakToe {
         return board;
     }
 
+    /*the function returns turn if we are able to return a turn, and false, if we are not able
+     to play a turn*/
     public boolean playTurn(int spot){
-        boolean isValid = withinRange(spot) && ! isSpotTaken(spot);
+        boolean isValid = withinRange(spot) && !isSpotTaken(spot);
         if(isValid){
             board[spot-1] = currentMarker;
             currentMarker = (currentMarker == userMarker) ? aiMarker : userMarker;
@@ -39,6 +49,7 @@ public class TicTakToe {
         return number > 0 && number < board.length + 1;
     }
 
+    //check if the spot is taken
     public  boolean isSpotTaken(int number){
         return  board[number-1] != '-';
     }
@@ -68,6 +79,7 @@ public class TicTakToe {
     }
     public boolean isThereAWinner(){
         boolean diagonals = (rightDi()|| leftDi() || middleRow() || secondCol()) && board[4] != '-';
+        System.out.println(board[4]);
         boolean topAndFirst  = (topRow()|| firstCol()) && board[0] != '-';
         boolean bottomAndThird = (bottomRow() || thirdCol()) && board[8] != '-';
          if(diagonals){
